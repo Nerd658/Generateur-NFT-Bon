@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valider le Bon</title>
+
+    <!-- Inclure le CSS de Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Style de la page de chargement */
+        .loading-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding-top: 25%;
+            font-size: 18px;
+            z-index: 1050;
+        }
+
+        /* Formulaire centré et plus petit */
+        .form-container {
+            max-width: 350px;
+            margin: auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Animation de chargement */
+        .loader {
+            border: 10px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 10px solid #0d6efd;
+            width: 70px;
+            height: 70px;
+            animation: spin 1.5s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Valider le Bon</h1>
+        <form id="validateForm" class="form-container">
+            <div class="mb-3">
+                <label for="voucherId" class="form-label">ID du Bon</label>
+                <input type="number" class="form-control" id="voucherId" name="voucherId" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Valider</button>
+        </form>
+    </div>
+
+    <!-- Page de chargement -->
+    <div class="loading-page" id="loadingPage">
+        <div class="loader"></div>
+        <p id="loadingMessage">Transfert en cours...</p>
+    </div>
+
+    <!-- Inclure le JS de Bootstrap et les dépendances -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Script Web3 et logique de validation -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
+    <script>
+        const abiUrl = 'https://nerd658.github.io/nft-metadata/DiscountVoucherABI.json';
+        const addressUrl = 'https://nerd658.github.io/nft-metadata/contractAddress.txt';
+    
+        async function getContractDetails() {
+            const abiResponse = await fetch(abiUrl);
+            const abi = await abiResponse.json();
+            const addressResponse = await fetch(addressUrl);
+            const address = await addressResponse.text();
+            return { abi, address };
+        }
+    
+        getContractDetails().then(({ abi, address }) => {
+            const web3 = new Web3(window.ethereum);
+            const contract = new web3.eth.Contract(abi, address.trim());
+    
+            document.getElementById('validateForm').addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const voucherId = document.getElementById('voucherId').value;
+    
+                // Afficher la page de chargement avec un message dynamique
+                document.getElementById('loadingPage').style.display = 'block';
+                document.getElementById('loadingMessage').innerText = `Transfert du Bon ${voucherId}% en cours...`;
+    
+                if (window.ethereum) {
+                    try {
+                        await window.ethereum.request({ method: 'eth_requestAccounts' });
+                        const accounts = await web3.eth.getAccounts();
+                        const result = await contract.methods.validateVoucher(voucherId).send({ from: accounts[0] });
+                        console.log('Bon validé avec succès!');
+    
+                        // Détails de la validation
+                        const validationDetails = {
+                            walletAddress: accounts[0],
+                            voucherId: voucherId,
+                            transactionHash: result.transactionHash
+                        };
+    
+                        fetch("{% url 'validation' %}", {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(validationDetails)
+                        }).then(response => response.json())
+                          .then(data => {
+                              if (data.success) {
+                                  document.getElementById('loadingMessage').innerText = 'Validation enregistrée avec succès!';
+                                  setTimeout(() => {
+                                      // Rafraîchir la page après 1,5 seconde
+                                      location.reload();
+                                  }, 1500);
+                              } else {
+                                  document.getElementById('loadingMessage').innerText = 'Erreur lors de l\'enregistrement.';
+                                  setTimeout(() => {
+                                      location.reload();
+                                  }, 1500);
+                              }
+                          })
+                          .catch(error => {
+                              console.error('Erreur lors de l\'enregistrement:', error);
+                              document.getElementById('loadingMessage').innerText = 'Erreur lors de l\'enregistrement.';
+                              setTimeout(() => {
+                                  location.reload();
+                              }, 1500);
+                          });
+                    } catch (error) {
+                        console.error('Erreur lors de la validation:', error);
+                        document.getElementById('loadingMessage').innerText = 'Erreur lors de la validation.';
+                            location.reload();
+                    }
+                } else {
+                    console.error('Portefeuille Ethereum non détecté');
+                    document.getElementById('loadingMessage').innerText = 'Portefeuille Ethereum non détecté.';
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>

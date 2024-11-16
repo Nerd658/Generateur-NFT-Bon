@@ -1,0 +1,342 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Festava Live - Ticket HTML Form</title>
+
+    <!-- CSS FILES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;400;700&display=swap" rel="stylesheet">
+    {% load static %}
+
+    <link href="{% static 'app/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'app/css/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'app/css/templatemo-festava-live.css' %}" rel="stylesheet">
+
+    <style>
+                /* Importation d'une police élégante depuis Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        /* Modal */
+        .spinner-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px; /* Espace entre le titre et l'animation */
+        }
+
+        /* Contenu de la modal */
+        .modal-content {
+            padding: 30px;  /* Augmentation de l'espace autour du contenu */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 850px; /* Augmenter la largeur de la modal */
+            height: 300px; /* Augmenter la hauteur de la modal */
+            max-width: 90%; /* Pour garder la modal responsive sur des écrans plus petits */
+            min-height: 250px; /* Hauteur minimale */
+        }
+
+        .modal-text {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* Style pour le fond sombre (backdrop) de la modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+            z-index: 1040; /* Derrière le contenu de la modal */
+            display: none; /* Caché par défaut */
+        }
+
+    </style>
+    
+    <!--
+
+TemplateMo 583 Festava Live
+
+https://templatemo.com/tm-583-festava-live
+
+-->
+
+</head>
+
+<body style="background-image: url('{% static 'app/img/nicholas-green-unsplash-blur.jpg' %}')">
+
+    <main>
+
+
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href=" {% url 'acceuil' %} " >
+                    Concert
+                </a>
+
+                
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav align-items-lg-center ms-auto me-lg-5">
+                        
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href=" {% url 'acceuil' %} " >Accueil</a>
+                        </li>
+        
+                        <li class="nav-item">
+                            <!-- Optionnel, peut être ajouté si nécessaire -->
+                        </li>
+        
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_3"></a>
+                        </li>
+        
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_4">Programme</a>
+                        </li>
+        
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_5"></a>
+                        </li>
+        
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_6">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_6"></a>
+                        </li>
+                    </ul>
+        
+                    <a href=" {% url 'validation' %} " class="btn custom-btn d-lg-block d-none">Valider son Ticket/Bon</a>
+                    
+                </div>
+            </div>
+            
+        </nav>
+
+        
+        <section class="ticket-section section-padding">
+            <div class="section-overlay"></div>
+
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-6 col-10 mx-auto">
+                        <form id="mintForm" class="custom-form ticket-form mb-5 mb-lg-0" role="form">
+                            <h2 class="text-center mb-4">Get started here pour le mint</h2>
+
+                            <div class="ticket-form-body">
+                                <label for="walletAddress" class="form-label">Adresse du Wallet :</label>
+                                <input type="text" class="form-control" id="walletAddress" name="walletAddress"
+                                    placeholder="Wallet Adresse" pattern="0x[a-fA-F0-9]{40}" required="">
+
+                                <h6>Choose le type de bon</h6>
+
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="form-check form-control">
+                                            <input class="form-check-input" type="radio" name="voucherId" id="voucherId1" value="1" required>
+                                            <label class="form-check-label" for="voucherId1">
+                                                Bon de 25%
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="form-check form-control">
+                                            <input class="form-check-input" type="radio" name="voucherId" id="voucherId2" value="2">
+                                            <label class="form-check-label" for="voucherId2">
+                                                Bon de 50%
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-10 col-8 mx-auto">
+                                    <button type="submit" class="btn btn-primary w-100">Mint</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+        </section>
+
+         <!-- Notification de succès -->
+         <div class="notification" id="successMessage">Transaction réussie !</div>
+         <!-- Notification d'échec -->
+         <div class="notification" id="errorMessage" style="background-color: #dc3545; display: none;">Erreur de transaction !</div>
+ 
+     </div>
+ 
+     <!-- Modal pour le chargement -->
+     <div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+             <div class="modal-content">
+                 <h5 class="modal-title" id="loadingModalLabel">Transaction en cours</h5>
+                 
+                 <!-- Animation en haut -->
+                 <div class="spinner-container">
+                     <div class="spinner-border text-primary" role="status">
+                         <span class="visually-hidden">Chargement...</span>
+                     </div>
+                 </div>
+                 
+                 <!-- Espacement entre l'animation et le texte -->
+                 <p class="modal-text">Veuillez patienter pendant que la transaction soit terminée...</p>
+             </div>
+         </div>
+     </div>
+ 
+     <!-- Modal de succès -->
+     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+             <div class="modal-content">
+                 <h5 class="modal-title" id="successModalLabel">Succès de la transaction</h5>
+                 <p>Votre transaction a été réalisée avec succès ! 😏✅</p>
+                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick=location.reload();>OK</button>
+             </div>
+         </div>
+     </div>
+     <!-- Modal d'échec -->
+     <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+             <div class="modal-content">
+                 <h5 class="modal-title" id="errorModalLabel">Échec de la transaction</h5>
+                 <p>Une erreur s'est produite lors du minting du voucher. 😞❌</p>
+                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick=location.reload();>OK</button>
+             </div>
+         </div>
+     </div>
+
+
+    </main>
+
+
+    <!--
+
+T e m p l a t e M o
+
+-->
+    <!-- JAVASCRIPT FILES -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
+    <script>
+        const abiUrl = 'https://nerd658.github.io/nft-metadata/DiscountVoucherABI.json';
+        const addressUrl = 'https://nerd658.github.io/nft-metadata/contractAddress.txt';
+
+        function showNotification(message) {
+            const notification = document.getElementById('successMessage');
+            notification.innerText = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        async function getContractDetails() {
+            const abiResponse = await fetch(abiUrl);
+            const abi = await abiResponse.json();
+            const addressResponse = await fetch(addressUrl);
+            const address = await addressResponse.text();
+            return { abi, address };
+        }
+        
+        getContractDetails().then(({ abi, address }) => {
+            const web3 = new Web3(window.ethereum);
+            const contract = new web3.eth.Contract(abi, address.trim());
+        
+            document.getElementById('mintForm').addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const walletAddress = document.getElementById('walletAddress').value;
+                const voucherId = document.querySelector('input[name="voucherId"]:checked').value; // Correctement récupérer la valeur sélectionnée
+        
+                if (window.ethereum) {
+                    try {
+                        await window.ethereum.request({ method: 'eth_requestAccounts' });
+                        const accounts = await web3.eth.getAccounts();
+                        const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+                        loadingModal.show(); // Afficher la modale de chargement
+        
+                        try {
+                            // Essayer d'envoyer la transaction
+                            const result = await contract.methods.mintVoucher(walletAddress, voucherId).send({ from: accounts[0] });
+        
+                            // Une fois la transaction confirmée, fermer la modale de chargement
+                            loadingModal.hide();
+        
+                            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                            successModal.show(); // Afficher la modale de succès
+        
+                            showNotification('Transaction réussie !');
+        
+                            const transactionDetails = {
+                                walletAddress: walletAddress,
+                                voucherId: voucherId,
+                                transactionHash: result.transactionHash
+                            };
+        
+                            fetch("{% url 'mint' %}", {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(transactionDetails)
+                            }).then(response => response.json())
+                              .then(data => {
+                                  if (data.success) {
+                                      showNotification('Transaction enregistrée avec succès !');
+                                  } else {
+                                      showNotification('Erreur lors de l\'enregistrement de la transaction : ' + data.message);
+                                  }
+                              })
+                              .catch(error => console.error('Erreur lors de l\'enregistrement de la transaction :', error));
+        
+                        } catch (transactionError) {
+                            // Si la transaction est rejetée par l'utilisateur ou une erreur survient, on entre ici
+                            console.error('Transaction rejetée ou erreur lors de l\'envoi :', transactionError);
+        
+                            // Fermer la modale de chargement
+                            loadingModal.hide();
+        
+                            // Afficher une notification d'échec ou une modale spécifique
+                            const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                            errorModal.show(); // Afficher la modale d'échec
+        
+                            showNotification('La transaction a été rejetée ou une erreur est survenue.');
+                        }
+        
+                    } catch (error) {
+                        console.error('Erreur lors du minting du voucher :', error);
+                    }
+                } else {
+                    console.error('Wallet Ethereum non détecté');
+                }
+            });
+        });
+        
+    </script>
+    <script src="{% static 'app/js/jquery.min.js' %}"></script>
+    <script src="{% static 'app/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'app/js/jquery.sticky.js' %}"></script>
+    <script src="{% static 'app/js/custom.js' %}"></script>
+
+</body>
+
+</html>

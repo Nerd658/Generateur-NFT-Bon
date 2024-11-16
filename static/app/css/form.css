@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAX Rewards</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #0d1123;
+        }
+        .container-fluid {
+            padding: 0;
+        }
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .navbar-nav .nav-link {
+            font-size: 1.2em;
+        }
+        .banner-container {
+            background: url('https://img.freepik.com/free-vector/landscape-background-with-shooting-star_23-2147703310.jpg?t=st=1725140984~exp=1725144584~hmac=163b1b90ce607c7415597cf2dd79fb13dfa129ac4c818eddb5f58f9fc28745fc&w=740') no-repeat center center/cover;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            margin: 20px auto;
+        }
+
+        .text-section {
+            flex: 1;
+            color: #ffffff;
+            padding-right: 20px;
+        }
+
+        .text-section h1 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .text-section p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .text-section button {
+            background-color: #1e2a4a;
+            color: #fff;
+            border: 2px solid #f39c12;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .text-section button:hover {
+            background-color: #f39c12;
+        }
+
+        .image-section {
+            position: relative;
+            width: 300px; /* Augmenter la largeur si nécessaire */
+            height: 300px; /* Augmenter la hauteur si nécessaire */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-section img {
+            position: absolute;
+            max-width: 60%; /* Augmenter la taille des images */
+            border-radius: 50%;
+            animation: bounce 2s infinite;
+        }
+
+        .img1 {
+            top: 65%;
+            right: 1%;
+            transform: translate(-50%, 0);
+        }
+
+        .img3 {
+            top: 20%;
+            left: 5%;
+            transform: translate(0, -50%);
+        }
+
+        .img2 {
+            top: 0%;
+            left: 50%;
+            transform: translate(0, -50%);
+        }
+
+        @keyframes bounce {
+            100%, 60%, 50%, 40%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .wallet-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+
+        .create-account-link {
+            color: #f39c12;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .create-account-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: #001233;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer .col-lg-4 h5 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        footer p, footer ul {
+            font-size: 0.9em;
+            line-height: 1.6em;
+        }
+
+        footer .social-icons a {
+            margin: 0 10px;
+        }
+
+    </style>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">UVBF NFT HUB</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="acceuil">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">A Propos</a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="compte/connexion">S'identifier</a>
+                    </li>
+                </ul>
+
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <!-- Main Content -->
+    <div class="banner-container">
+        <div class="text-section">
+            <h1>Entrez l'adresse de votre wallet pour recevoir votre NFT.</h1>
+            <input type="text" placeholder="Adresse du wallet" class="wallet-input">
+            <button type="button">CONNECT WAX WALLET</button>
+            <p>Si vous n'avez pas de compte, cliquez sur ce lien pour en créer un : 
+                <a href="#" class="create-account-link">Get</a>
+            </p>
+        </div>
+        <div class="image-section">
+            <img src="https://wax.atomichub.io/images/wombat_small.webp" alt="WAX Coin Small" class="img1">
+            <img src="https://wax.atomichub.io/images/wombat_medium.webp" alt="WAX Coin Medium" class="img2">
+            <img src="https://wax.atomichub.io/images/wombat_big.webp" alt="WAX Coin Big" class="img3"> 
+        </div>
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Footer -->
+    <footer class="text-white text-center text-lg-start">
+        <div class="container p-4">
+            <div class="row mt-4">
+                <div class="col-lg-4 col-md-12 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">À Propos</h5>
+                    <p>Nous transformons l'inscription universitaire avec la technologie NFT. En vérifiant les informations de votre carte INE, nous créons et émettons un NFT unique pour chaque étudiant de l'UVBF, garantissant une preuve d'inscription valide pour l'année en cours.</p>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Horaires d'Ouverture</h5>
+                    <p>Notre équipe est disponible pour vous assister du lundi au vendredi, de 8h à 17h.</p>
+                    <h5 class="text-uppercase mb-4">Contacts</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope"></i> Email : <a href="mailto:contact@uvbf.com" class="text-white">contact@uvbf.com</a></li>
+                        <li><i class="fas fa-phone"></i> Téléphone : (+226) 65 75 81 30 / 56 66 59 55</li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase mb-4">Suivez-nous</h5>
+                    <ul class="list-unstyled social-icons">
+                        <li><a href="https://facebook.com" target="_blank"><i class="fab fa-facebook fa-lg"></i></a></li>
+                        <li><a href="https://twitter.com" target="_blank"><i class="fab fa-twitter fa-lg"></i></a></li>
+                        <li><a href="https://instagram.com" target="_blank"><i class="fab fa-instagram fa-lg"></i></a></li>
+                        <li><a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2024 UVBF NFT HUB. Tous droits réservés.
+        </div>
+    </footer>
+    <!-- End Footer -->
+</body>
+</html>

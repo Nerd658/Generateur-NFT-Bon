@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #eee;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .error {
+        color: red;
+      }
+
+      .container {
+        background-color: white;
+        border-radius: 25px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 800px;
+        display: flex;
+        overflow: hidden;
+      }
+
+      .form-container,
+      .image-container {
+        padding: 50px;
+      }
+
+      .form-container {
+        flex: 1;
+      }
+
+      .image-container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        font-size: 2rem;
+        text-align: center;
+      }
+
+      .form-outline {
+        margin-bottom: 15px;
+        position: relative;
+      }
+
+      .form-outline i {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: #888;
+      }
+
+      .form-outline input {
+        width: 100%;
+        padding: 10px 10px 10px 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .form-outline label {
+        position: absolute;
+        top: -5px;
+        left: 40px;
+        background-color: white;
+        padding: 0 5px;
+        font-size: 0.9rem;
+        color: #888;
+      }
+
+      .form-check {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .form-check input {
+        margin-right: 10px;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .btn:hover {
+        background-color: #0056b3;
+      }
+      .error-icon {
+        color: red;
+        margin-right: 5px;
+    }
+
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="form-container">
+        <h1>Sign up</h1>
+        <form method="post" action="{% url 'inscription' %}">
+            {% csrf_token %} 
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="error">
+                        <i class="fas fa-exclamation-circle error-icon"></i>{{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+          <br>
+
+          <div class="form-outline">
+            <i class="fas fa-user"></i>
+            <input
+              type="text"
+              id="form3Example1c"
+              class="form-control"
+              name="username"
+            />
+            <label class="form-label" for="form3Example1c">Your Name</label>
+          </div>
+
+          <div class="form-outline">
+            <i class="fas fa-lock"></i>
+            <input
+              type="password"
+              id="form3Example4c"
+              class="form-control"
+              name="password1"
+            />
+            <label class="form-label" for="form3Example4c">Password</label>
+          </div>
+
+          <div class="form-outline">
+            <i class="fas fa-key"></i>
+            <input
+              type="password"
+              id="form3Example4cd"
+              class="form-control"
+              name="password2"
+            />
+            <label class="form-label" for="form3Example4cd"
+              >Repeat your password</label
+            >
+          </div>
+
+
+
+          <button type="submit" class="btn">S'inscrire</button>
+        </form>
+        <br />
+        <div class="link">
+          <a href="{% url 'connexion' %}">Se connecter</a>
+        </div>
+        </div>
+        <div class="image-container">
+        <img
+          src="https://i.pinimg.com/originals/31/36/cd/3136cd447c99783f59cd1a4c7d9ca9c1.png"
+          alt="Sample image"
+        />
+      </div>
+    </div>
+  </body>
+</html>

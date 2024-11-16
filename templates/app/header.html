@@ -1,0 +1,66 @@
+<!-- templates/app/header.html -->
+<!-- Navbar -->
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+      <!-- Navbar brand -->
+      <a class="navbar-brand" href="accueil">UVBF NFT HUB</a>
+  
+      <!-- Toggle button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <!-- Collapsible wrapper -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Left links -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="accueil">Accueil</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="contact">Contact</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">À Propos</a>
+          </li>
+        </ul>
+  
+        <!-- Right links -->
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          {% if user.is_authenticated %}
+          <!-- Si l'utilisateur est connecté, afficher "Mon compte" et "Déconnexion" -->
+          <li class="nav-item">
+           
+            <a class="nav-link active" aria-current="page" href="#">Mon Compte</a>
+          </li>
+          <li class="nav-item">
+            <form method="POST" action="{% url 'deconnexion' %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-link nav-link">Se déconnecter</button>
+          </form>
+          </li>
+          {% else %}
+          <!-- Si l'utilisateur n'est pas connecté, afficher "S'identifier" -->
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="compte/connexion">S'identifier</a>
+          </li>
+          {% endif %}
+        </ul>
+  
+        <!-- Search form -->
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
+         
+        </form>
+      </div>
+      <!-- Collapsible wrapper -->
+    </div>
+    <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->

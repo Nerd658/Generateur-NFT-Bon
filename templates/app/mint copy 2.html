@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mint Voucher</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Mint Voucher</h1>
+        <form id="mintForm" class="form">
+            <div class="mb-3">
+                <label for="walletAddress" class="form-label">Adresse de Wallet :</label>
+                <input type="text" class="form-control" id="walletAddress" name="walletAddress" required>
+            </div>
+            <div class="mb-3">
+                <label for="voucherId" class="form-label">ID du Voucher :</label>
+                <input type="number" class="form-control" id="voucherId" name="voucherId" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Mint</button>
+        </form>
+
+        <!-- Notification de succès -->
+        <div class="notification" id="successMessage">Transaction réussie !</div>
+        <!-- Notification d'échec -->
+        <div class="notification" id="errorMessage" style="background-color: #dc3545; display: none;">Erreur de transaction !</div>
+
+    </div>
+
+    <!-- Modal pour le chargement -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <h5 class="modal-title" id="loadingModalLabel">Transaction en cours</h5>
+                
+                <!-- Animation en haut -->
+                <div class="spinner-container">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Chargement...</span>
+                    </div>
+                </div>
+                
+                <!-- Espacement entre l'animation et le texte -->
+                <p class="modal-text">Veuillez patienter pendant que la transaction soit terminée...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de succès -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <h5 class="modal-title" id="successModalLabel">Succès de la transaction</h5>
+                <p>Votre transaction a été réalisée avec succès ! 😏✅</p>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick=location.reload();>OK</button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal d'échec -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <h5 class="modal-title" id="errorModalLabel">Échec de la transaction</h5>
+                <p>Une erreur s'est produite lors du minting du voucher. 😞❌</p>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick=location.reload();>OK</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap JS et dépendances -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
+    <script>
+        const abiUrl = 'https://nerd658.github.io/nft-metadata/DiscountVoucherABI.json';
+        const addressUrl = 'https://nerd658.github.io/nft-metadata/contractAddress.txt';
+
+        function showNotification(message) {
+            const notification = document.getElementById('successMessage');
+            notification.innerText = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        async function getContractDetails() {
+            const abiResponse = await fetch(abiUrl);
+            const abi = await abiResponse.json();
+            const addressResponse = await fetch(addressUrl);
+            const address = await addressResponse.text();
+            return { abi, address };
+        }
+        
+        getContractDetails().then(({ abi, address }) => {
+            const web3 = new Web3(window.ethereum);
+            const contract = new web3.eth.Contract(abi, address.trim());
+        
+            document.getElementById('mintForm').addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const walletAddress = document.getElementById('walletAddress').value;
+                const voucherId = document.getElementById('voucherId').value;
+        
+                if (window.ethereum) {
+                    try {
+                        await window.ethereum.request({ method: 'eth_requestAccounts' });
+                        const accounts = await web3.eth.getAccounts();
+                        const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+                        loadingModal.show(); // Afficher la modale de chargement
+        
+                        try {
+                            // Essayer d'envoyer la transaction
+                            const result = await contract.methods.mintVoucher(walletAddress, voucherId).send({ from: accounts[0] });
+        
+                            // Une fois la transaction confirmée, fermer la modale de chargement
+                            loadingModal.hide();
+        
+                            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                            successModal.show(); // Afficher la modale de succès
+        
+                            showNotification('Transaction réussie !');
+        
+                            const transactionDetails = {
+                                walletAddress: walletAddress,
+                                voucherId: voucherId,
+                                transactionHash: result.transactionHash
+                            };
+        
+                            fetch("{% url 'mint' %}", {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(transactionDetails)
+                            }).then(response => response.json())
+                              .then(data => {
+                                  if (data.success) {
+                                      showNotification('Transaction enregistrée avec succès !');
+                                  } else {
+                                      showNotification('Erreur lors de l\'enregistrement de la transaction : ' + data.message);
+                                  }
+                              })
+                              .catch(error => console.error('Erreur lors de l\'enregistrement de la transaction :', error));
+        
+                        } catch (transactionError) {
+                            // Si la transaction est rejetée par l'utilisateur ou une erreur survient, on entre ici
+                            console.error('Transaction rejetée ou erreur lors de l\'envoi :', transactionError);
+        
+                            // Fermer la modale de chargement
+                            loadingModal.hide();
+        
+                            // Afficher une notification d'échec ou une modale spécifique
+                            const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                            errorModal.show(); // Afficher la modale d'échec
+        
+                            showNotification('La transaction a été rejetée ou une erreur est survenue.');
+                        }
+        
+                    } catch (error) {
+                        console.error('Erreur lors du minting du voucher :', error);
+                    }
+                } else {
+                    console.error('Wallet Ethereum non détecté');
+                }
+            });
+        });
+        
+    </script>
+</body>
+</html>
